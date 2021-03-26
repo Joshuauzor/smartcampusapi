@@ -22,7 +22,7 @@ module.exports = (app) => {
 
      
 
-    // ---------------------------------------------
+    // --------------------- Create schools ------------------------
 
     app.post('/school/create', tokenCheck.verifyToken, (req, res) => {
         //check token
@@ -81,7 +81,7 @@ module.exports = (app) => {
         })
     });
 
-    // ---------------------------------------------------------------------------------------------
+    // --------------------------------- Get All schools------------------------------------------------------------
 
     app.get('/school/getAll', tokenCheck.verifyToken, (req, res) => {
         jwt.verify(req.token, process.env.JWT_SECRET_TOKEN, async(err, results) => {
@@ -109,4 +109,94 @@ module.exports = (app) => {
         })
     })
 
+     // --------------------------------- Delete schools------------------------------------------------------------
+
+     app.delete('/school/deleteSchool', tokenCheck.verifyToken, (req, res) => {
+        jwt.verify(req.token, process.env.JWT_SECRET_TOKEN, async(err, results) => {
+            if(err){
+                res.sendStatus(403)
+            }
+            else{
+                // return res.json(req.body.school_id);
+
+                const deleteSchool = await Schools.destroy({
+                    where: {
+                        school_id: req.body.school_id
+                    }
+                  });
+                  
+                if(deleteSchool){
+                    return res.status(200).json(
+                        {
+                            status: 'success',
+                            message: 'School successfully deleted'
+                        }
+                    )
+                }
+                else{
+                    return res.status(200).json(
+                        { 
+                            status: 'error',
+                            message: 'Opps! An Error occured'
+                        }
+                    )
+                }
+            }
+        })
+    })
+
+    // --------------------- Update school ------------------------
+
+    app.put('/school/editSchool', tokenCheck.verifyToken, (req, res) => {
+        //check token
+        jwt.verify(req.token, process.env.JWT_SECRET_TOKEN, async(err, results) => {
+            if(err){
+                res.sendStatus(403)
+            }
+            else{
+                // validate
+                const schema = Joi.object({ 
+                    school_id: Joi.string().required(),
+                    school: Joi.string().required().min(5),
+                    aka: Joi.string().required(),
+                    city: Joi.string().required(),
+                    Authorization: Joi.string().required()
+                });
+
+                const {value, error} = schema.validate(req.body);
+                if(error && error.details){
+                    // return res.status(406).json({message: error.details[0].message});
+                    return res.json({message: error.message});
+                }
+                else{
+                    let data = {
+                        school_name: req.body.school,
+                        aka: req.body.aka,
+                        city: req.body.city,              
+                    }
+
+                    console.log(data);
+                    const updateSchool = await Schools.update(data,{
+                        where: {
+                            school_id: req.body.school_id
+                        }
+                    });
+
+                    if(updateSchool){            
+                        return res.status(200).json({
+                            message: 'School Updated Successfully',
+                            status: 'success',
+                            data: updateSchool
+                        });
+                        }
+                    else{
+                        return res.status(400).json({
+                            message: 'An Error Occured',
+                            status: 'error'
+                        })
+                    }
+                }
+            }
+        })
+    });
 }
