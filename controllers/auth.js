@@ -4,7 +4,7 @@ module.exports = (app) => {
     const bcrypt = require('bcryptjs');
     // const expressValidator = require('express-validator');
     // const mysql = require('mysql');
-    const bodyParser = require('body-parser');
+    // const bodyParser = require('body-parser');
     const Joi = require('joi');
     const nodemailer = require('nodemailer');
     const jwt = require('jsonwebtoken');

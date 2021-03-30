@@ -1,4 +1,6 @@
 const Schools = require('../models/Schools');
+const Faculties = require('../models/Faculties');
+
 
 module.exports = (app) => {
     const express = require('express');
@@ -24,7 +26,7 @@ module.exports = (app) => {
 
     // --------------------- Create schools ------------------------
 
-    app.post('/school/create', tokenCheck.verifyToken, (req, res) => {
+    app.post('/faculty/create', tokenCheck.verifyToken, (req, res) => {
         //check token
         jwt.verify(req.token, process.env.JWT_SECRET_TOKEN, async(err, results) => {
             if(err){
@@ -35,9 +37,8 @@ module.exports = (app) => {
                 // validate
                 const schema = Joi.object({ 
                     school: Joi.string().required().min(5),
-                    aka: Joi.string().required(),
-                    city: Joi.string().required(),
-                    Authorization: Joi.string().required()
+                    faculty: Joi.string().required(),
+                    // Authorization: Joi.string().required()
                 });
 
                 const {value, error} = schema.validate(req.body);
@@ -83,17 +84,17 @@ module.exports = (app) => {
 
     // --------------------------------- Get All schools------------------------------------------------------------
 
-    app.get('/school/getAll', tokenCheck.verifyToken, (req, res) => {
+    app.get('/faculty/getAll', tokenCheck.verifyToken, (req, res) => {
         jwt.verify(req.token, process.env.JWT_SECRET_TOKEN, async(err, results) => {
             if(err){
                 res.sendStatus(403)
             }
             else{
-                const getSchool = await Schools.findAndCountAll();
-                if(getSchool){
+                const getFaculties = await Faculties.findAndCountAll();
+                if(getFaculties){
                     return res.status(200).json(
                         {
-                            data: getSchool,
+                            data: getFaculties,
                             status: 'success'
                         }
                     )
