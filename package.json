@@ -4,7 +4,7 @@
   "description": "campus made easy",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "serve": "nodemon app.js"
   },
   "keywords": [
     "smart",
@@ -27,5 +27,14 @@
     "path": "^0.12.7",
     "randomstring": "^1.1.5",
     "sequelize": "^6.5.1"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Joshuauzor/smartcampusapi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Joshuauzor/smartcampusapi/issues"
+  },
+  "homepage": "https://github.com/Joshuauzor/smartcampusapi#readme"
 }

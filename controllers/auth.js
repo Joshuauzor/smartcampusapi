@@ -1,4 +1,4 @@
-module.exports = (app) => {
+// module.exports = (app) => {
     const express = require('express');
     const dotenv = require('dotenv').config();
     const bcrypt = require('bcryptjs');
@@ -17,9 +17,9 @@ module.exports = (app) => {
     const moment = require('moment'); // require
      
 
-    // ---------------------------------------------
-
-    app.post('/register', async (req, res, next) => {
+    // --------------------------------------------- 
+ 
+   let register = async (req, res) => {
         // validate
         const schema = Joi.object({ 
             name: Joi.string().required().messages({
@@ -93,11 +93,12 @@ module.exports = (app) => {
                 }
             }
         }
-    });
+    }
 
     // ---------------------------------------------------------------------------------------------
 
-    app.post('/login', async (req, res, next) => {
+
+    let login = async (req, res) => {
         const schema = Joi.object({ 
             email: Joi.string().trim().min(6).required().email(),
             password: Joi.string().min(5).required(),  
@@ -151,12 +152,14 @@ module.exports = (app) => {
                 return res.status(500);
             }
         }
-    });
+    };
 
-    // ----------- generate access token ------------------
+    // ----------- generate access token -------------------
 
     function generateAccessToken(user){
         return jwt.sign({user}, process.env.JWT_SECRET_TOKEN, {expiresIn: '1200s'}); 
     }
 
-}
+//}
+
+module.exports = {login, register}

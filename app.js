@@ -23,12 +23,11 @@ db.authenticate()
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
-// var urlencodedParser = bodyParser.urlencoded({extended: true});
-// app.set('view engine', 'ejs');
+
 app.use('/assets', express.static('assets'));
 // define routes
  app.use('/', require('./routes/auth'));
- app.use('/dashboard', require('./routes/dashboard'));
+ app.use('/dashboard', require('./routes/dashboard')); 
 
 // app.use(app.router);
 // routes.initialize(app);
@@ -38,7 +37,7 @@ const auth = require('./controllers/auth');
 const school = require('./controllers/school');
 const faculty = require('./controllers/faculty');
 
-auth(app);
+// auth(app);
 school(app);
 faculty(app);
 
